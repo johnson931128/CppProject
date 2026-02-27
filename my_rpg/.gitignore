@@ -1,0 +1,19 @@
+# Ignore all build directories anywhere in the project
+**/build/
+
+# Ignore compiled object files and dependencies
+*.o
+*.d
+*.sym
+*.asm
+*.out
+*rpg_game
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore xv6 specific generated binaries
+my_rasterizer/xv6_code/user/_*
+my_rasterizer/xv6_code/kernel/kernel
+my_rasterizer/xv6_code/mkfs/mkfshollow_clone/build/
