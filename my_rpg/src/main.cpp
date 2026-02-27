@@ -1,45 +1,46 @@
 #include <SFML/Graphics.hpp>
+#include "Player.hpp"
 
 int main() {
-    // 建立視窗
-    sf::RenderWindow window(sf::VideoMode(800, 600), "CSIE5004 - My RPG Game");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "My Top-down RPG");
+    window.setFramerateLimit(60);
 
-    // 建議方案：在虛擬機中，手動限幀通常比 VSync 穩定的多
-    // 1. 註解掉 VSync
-    // window.setVerticalSyncEnabled(true); 
-    // 2. 改用限制影格率在 60 FPS
-    window.setFramerateLimit(60); 
+    Player player;
+    
+    // 初始化相機
+    sf::View view(sf::FloatRect(0, 0, 800, 600));
 
-    sf::CircleShape player(25.f);
-    player.setFillColor(sf::Color::Green);
-    player.setPosition(400.f, 300.f);
+    // 建立一個簡單的大地圖背景 (2000x2000)
+    sf::RectangleShape background(sf::Vector2f(2000, 2000));
+    background.setFillColor(sf::Color(50, 50, 50)); 
+    background.setPosition(0, 0);
 
     sf::Clock clock;
-    const float speed = 200.0f;
 
     while (window.isOpen()) {
-        sf::Time deltaTime = clock.restart();
-        float dt = deltaTime.asSeconds();
-
-        // 檢查時間：如果 dt 太大（例如切換視窗導致卡頓），強制校正避免噴裝
+        float dt = clock.restart().asSeconds();
         if (dt > 0.1f) dt = 0.1f;
 
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            if (event.type == sf::Event::Closed) window.close();
         }
 
-        sf::Vector2f movement(0.f, 0.f);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) movement.y -= speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) movement.y += speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) movement.x -= speed;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) movement.x += speed;
+        // 更新玩家邏輯 (內部會一併更新子彈)
+        player.update(dt);
 
-        player.move(movement * dt);
+        // 讓相機中心點對齊玩家座標
+        view.setCenter(player.getPosition());
 
         window.clear();
-        window.draw(player);
+
+        // 告訴 window 接下來的繪製都要套用這個相機視角
+        window.setView(view);
+
+        // 繪製順序：先畫背景，再畫玩家(與子彈)
+        window.draw(background);
+        player.draw(window);
+
         window.display();
     }
     return 0;
