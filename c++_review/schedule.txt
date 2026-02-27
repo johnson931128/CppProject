@@ -1,0 +1,84 @@
+===========================================================
+【C++ 深度重鑄計畫】
+目標：精通 C++，為遊戲引擎、系統設計、作業系統開發鋪路。
+互動模式：導讀解釋 -> 分析方案 -> 一步步帶做 (User 確認後執行)
+===========================================================
+
+### 第一部分：記憶體與邏輯的基石 (The Foundation)
+目標：建立記憶體佈局直覺，掌握指標與參照。
+實作專題：純 C++ 文字版地牢探險 (Text-based Dungeon Crawler)
+
+[ ] 1-01：環境確認與編譯流程 (Preprocessor -> Compilation -> Linking) [DONE]
+[ ] 1-02：變數的本質：型別、大小與記憶體位址 [DONE]
+[ ] 1-03：作用域 (Scope) 與生命週期 (Lifetime)：Stack Frame 的概念 [IN_PROGRESS]
+[ ] 1-04：流程控制重構：更優雅的 if/switch 與迴圈邏輯
+[ ] 1-05：函式 (Function) 深入：Pass-by-value 與 Stack 的代價
+[ ] 1-06：[核心] 指標 (Pointer) I：記憶體位址的操作與解參照
+[ ] 1-07：[核心] 指標 (Pointer) II：指標算術與陣列的關係
+[ ] 1-08：[核心] 參照 (Reference)：別名與底層實作差異
+[ ] 1-09：const 的藝術：指標常數 vs 常數指標
+[ ] 1-10：陣列 (Array) 與 C-Style String：記憶體連續性的優勢
+[ ] 1-11：[DSA] 時間複雜度 (Big O) 與空間複雜度入門
+[ ] 1-12：[DSA] 陣列演算法：Linear Search vs Binary Search
+[ ] 1-13：[DSA] 基礎排序觀念：Bubble Sort (指標操作練習)
+[ ] 1-14：Struct 與 Enum：自定義資料型別的記憶體對齊 (Padding/Alignment)
+[ ] 1-15：階段性總結：動態記憶體配置 (malloc/free vs new/delete) 初探
+
+---
+
+### 第二部分：抽象化與物件導向 (OOP & Architecture)
+目標：理解封裝、繼承、多型與 vtable 代價。
+實作專題：RPG 戰鬥系統模擬器 (Battle System Simulator)
+
+[ ] 2-01：Class 與 Object：封裝與存取權限
+[ ] 2-02：建構子與解構子：RAII 的雛形
+[ ] 2-03：初始列表 (Initializer List) 與成份物件
+[ ] 2-04：this 指標與靜態成員 (static)
+[ ] 2-05：[核心] 拷貝建構子與 Assignment Operator (Deep vs Shallow Copy)
+[ ] 2-06：繼承 (Inheritance) 基礎
+[ ] 2-07：[核心] 多型 (Polymorphism) 與 Virtual Functions
+[ ] 2-08：虛擬函式表 (vtable) 與 vptr：多型的底層代價
+[ ] 2-09：純虛擬函式與介面 (Interface)
+[ ] 2-10：運算子多載 (Operator Overloading)
+[ ] 2-11：模板 (Templates) 入門
+[ ] 2-12：[DSA] 鏈結串列 (Linked List) 實作
+[ ] 2-13：[DSA] Stack 與 Queue 實作
+[ ] 2-14：[DSA] 遞迴 (Recursion) 與 Stack Overflow
+
+---
+
+### 第三部分：現代 C++ 與標準庫 (Modern C++ & STL)
+目標：掌握 STL 容器、智慧指標與現代語法。
+實作專題：檔案壓縮工具 (Huffman Coding Compressor)
+
+[ ] 3-01：STL 容器概覽：Vector 與 String
+[ ] 3-02：迭代器 (Iterators)
+[ ] 3-03：關聯式容器：Map, Set 與 Pair
+[ ] 3-04：串流 (Streams) 與檔案 I/O
+[ ] 3-05：[核心] 智慧指標 (Smart Pointers)
+[ ] 3-06：Move Semantics (移動語義) 與 R-value Reference
+[ ] 3-07：Lambda 表達式與 Closure
+[ ] 3-08：STL 演算法 (sort, find, transform)
+[ ] 3-09：[DSA] 樹 (Tree) 與 Binary Search Tree (BST)
+[ ] 3-10：[DSA] Hash Table 原理 (unordered_map)
+[ ] 3-11：例外處理 (Exception Handling)
+[ ] 3-12：Namespace 與 程式庫組織
+
+---
+
+### 第四部分：核心系統與高效能並行 (Systems & Performance)
+目標：多執行緒、位元運算與系統級程式設計。
+實作專題：多執行緒日誌系統 或 A* 尋路視覺化
+
+[ ] 4-01：Casting 的四種形式 (static/dynamic/const/reinterpret)
+[ ] 4-02：位元運算 (Bitwise) 與 Bitmask
+[ ] 4-03：[核心] 多執行緒 (Multithreading) 基礎
+[ ] 4-04：Race Condition 與 Mutex
+[ ] 4-05：Lock_guard 與 Deadlock 預防
+[ ] 4-06：Atomic 操作與 Lock-free 概念
+[ ] 4-07：設計模式：Singleton 與 Observer
+[ ] 4-08：[DSA] 圖論 (Graph) 基礎
+[ ] 4-09：[DSA] 搜尋演算法：BFS / DFS
+[ ] 4-10：[DSA] 最短路徑：Dijkstra 或 A*
+[ ] 4-11：Build Systems 簡介 (CMake)
+[ ] 4-12：總結與未來展望

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/stack_cost.dir/05_stack_cost.cpp.o -o stack_cost 

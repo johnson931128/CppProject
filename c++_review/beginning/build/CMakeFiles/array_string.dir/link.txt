@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/array_string.dir/10_array_string.cpp.o -o array_string 

@@ -1,0 +1,14 @@
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/env_test.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/var_memory.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/scope_life.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/flow_control.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/stack_cost.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/pointer_test.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/pointer_arithmetic.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/reference_test.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/const_pointer.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/array_string.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/big_o_intro.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/search_algos.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/edit_cache.dir
+/home/CompOrg/c++_review/beginning/build/CMakeFiles/rebuild_cache.dir

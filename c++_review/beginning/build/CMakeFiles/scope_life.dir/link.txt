@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/scope_life.dir/03_scope_lifetime.cpp.o -o scope_life 

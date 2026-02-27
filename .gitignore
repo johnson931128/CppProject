@@ -1,3 +1,18 @@
-# 忽略編譯過程產生的目的檔與執行檔
-build/
-bin/
+# Ignore all build directories anywhere in the project
+**/build/
+
+# Ignore compiled object files and dependencies
+*.o
+*.d
+*.sym
+*.asm
+*.out
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore xv6 specific generated binaries
+my_rasterizer/xv6_code/user/_*
+my_rasterizer/xv6_code/kernel/kernel
+my_rasterizer/xv6_code/mkfs/mkfshollow_clone/build/
