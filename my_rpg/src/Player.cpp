@@ -20,6 +20,15 @@ void Player::update(float dt, const sf::RenderWindow& window) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) movement.x += speed;
     shape.move(movement * dt);
 
+    // ======== 新增：玩家邊界限制 (Room size: 3000 x 3000, Player radius: 25) ========
+    sf::Vector2f pos = shape.getPosition();
+    if (pos.x < 25.f) pos.x = 25.f;
+    if (pos.x > 2975.f) pos.x = 2975.f; // 1280 - 25
+    if (pos.y < 25.f) pos.y = 25.f;
+    if (pos.y > 2075.f) pos.y = 2975.f;   // 720 - 25
+    shape.setPosition(pos); // 如果超界了，強制拉回牆邊
+    // =========================================================================
+
     // 2. 更新冷卻時間
     if (shootCooldown > 0.f) {
         shootCooldown -= dt;
