@@ -9,6 +9,8 @@ public:
     void update(float dt);
     void draw(sf::RenderWindow& window);
     bool isExpired() const { return lifetime <= 0.f; }
+    sf::FloatRect getBounds() const { return shape.getGlobalBounds(); }
+    void destroy() { lifetime = 0.f; }
 
 private:
     sf::CircleShape shape;

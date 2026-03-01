@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -I./include
+CXXFLAGS = -std=c++17 -Wall -O3 -I./include
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC = $(wildcard src/*.cpp)
