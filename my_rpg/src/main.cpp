@@ -8,9 +8,9 @@
 #include "Enemy.hpp"
 
 int main() {
-    // 1. 初始化視窗
+    // 1. 初始化視窗 (配合你的 200Hz 螢幕，拉高渲染上限)
     sf::RenderWindow window(sf::VideoMode(800, 600), "CSIE5004 - My Top-down RPG");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(200); 
 
     // 設定隨機亂數種子，確保每次開遊戲怪物生的位置不一樣
     srand(static_cast<unsigned>(time(NULL)));
@@ -28,76 +28,90 @@ int main() {
     background.setPosition(0, 0);
 
     sf::Clock clock;
-    float spawnTimer = 0.f; // 用來計時何時該生下一隻怪物
+    float spawnTimer = 0.f; 
+
+    // ======== Fixed Time Step 的核心變數 ========
+    const sf::Time TimePerFrame = sf::seconds(1.f / 60.f); // 固定每秒更新 60 次物理邏輯
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;         // 時間累加器
 
     // 3. 遊戲主迴圈
     while (window.isOpen()) {
-        // 計算時間差 (dt)
-        float dt = clock.restart().asSeconds();
-        if (dt > 0.1f) dt = 0.1f; // 避免切換視窗時 dt 過大導致破圖
+        // 每次迴圈收集經過的時間，加入累加器
+        sf::Time elapsedTime = clock.restart();
+        
+        // 【防呆機制】：避免切換視窗或卡頓時累積過多時間，導致一次更新太多次
+        if (elapsedTime.asSeconds() > 0.1f) {
+            elapsedTime = sf::seconds(0.1f);
+        }
+        timeSinceLastUpdate += elapsedTime;
 
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close();
         }
 
-        // ======== 更新邏輯區 ========
+        // ======== 核心修改：固定時間步長 (Fixed Update) ========
+        // 只要累積的時間超過 1/60 秒，就執行一次邏輯更新
+        while (timeSinceLastUpdate > TimePerFrame) {
+            timeSinceLastUpdate -= TimePerFrame;
+            
+            // 這裡的 fixedDt 永遠是固定的 0.01666... 秒！
+            float fixedDt = TimePerFrame.asSeconds(); 
 
-        // 更新玩家邏輯 (內部會一併處理移動、射擊與更新子彈)
-        player.update(dt, window);
+            // --- 所有的「更新邏輯」都要放在這個迴圈裡面 ---
+            
+            // 1. 更新玩家與子彈
+            player.update(fixedDt, window);
 
-        // 怪物生成邏輯：每 2 秒生成一隻怪物
-        spawnTimer += dt;
-        if (spawnTimer > 2.0f) {
-            float randomX = static_cast<float>(rand() % 2000);
-            float randomY = static_cast<float>(rand() % 2000);
-            enemies.push_back(Enemy(sf::Vector2f(randomX, randomY)));
-            spawnTimer = 0.f; // 重置計時器
-        }
+            // 2. 怪物生成邏輯
+            spawnTimer += fixedDt;
+            if (spawnTimer > 2.0f) {
+                float randomX = static_cast<float>(rand() % 2000);
+                float randomY = static_cast<float>(rand() % 2000);
+                enemies.push_back(Enemy(sf::Vector2f(randomX, randomY)));
+                spawnTimer = 0.f;
+            }
 
-        // 更新所有怪物的位置 (讓牠們朝玩家走)
-        for (auto& enemy : enemies) {
-            enemy.update(dt, player.getPosition());
-        }
-
-        // 碰撞偵測：子彈 vs 怪物
-        auto& projectiles = player.getProjectiles(); // 取得玩家發射的真實子彈清單
-        for (auto& p : projectiles) {
+            // 3. 更新怪物位置
             for (auto& enemy : enemies) {
-                // 如果子彈跟怪物都活著，而且兩者的碰撞框重疊了
-                if (!p.isExpired() && !enemy.isDead() && 
-                    p.getBounds().intersects(enemy.getBounds())) {
-                    
-                    p.destroy();       // 子彈標記為銷毀
-                    enemy.takeDamage();// 怪物標記為死亡
+                enemy.update(fixedDt, player.getPosition());
+            }
+
+            // 4. 碰撞偵測
+            auto& projectiles = player.getProjectiles();
+            for (auto& p : projectiles) {
+                for (auto& enemy : enemies) {
+                    if (!p.isExpired() && !enemy.isDead() && 
+                        p.getBounds().intersects(enemy.getBounds())) {
+                        p.destroy();       
+                        enemy.takeDamage();
+                    }
                 }
             }
+
+            // 5. 清理死亡怪物
+            enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+                [](const Enemy& e) { return e.isDead(); }), enemies.end());
+                
+            // --- 更新邏輯結束 ---
         }
 
-        // 清理死亡的怪物 (Erase-Remove Idiom)
-        enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-            [](const Enemy& e) { return e.isDead(); }), enemies.end());
-
-        // 相機跟隨玩家，並將座標轉為整數以消除畫面微抖動 (Camera Jitter)
+        // ======== 繪製與相機更新區 ========
+        
+        // 相機跟隨玩家 (放在邏輯更新完之後，繪製之前)
         sf::Vector2f playerPos = player.getPosition();
         view.setCenter(std::floor(playerPos.x), std::floor(playerPos.y));
 
-
-        // ======== 繪製邏輯區 ========
         window.clear();
-
+        
         // 告訴 window 接下來的繪製都要套用這個相機視角
         window.setView(view);
 
-        // 1. 先畫最底層的背景
+        // 依序繪製背景、怪物、玩家(包含子彈)
         window.draw(background);
-
-        // 2. 畫怪物
         for (auto& enemy : enemies) {
             enemy.draw(window);
         }
-
-        // 3. 畫玩家 (內部會一併把子彈畫出來，所以子彈會蓋在怪物上面)
         player.draw(window);
 
         window.display();
